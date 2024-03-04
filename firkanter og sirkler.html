@@ -1,0 +1,53 @@
+<html lang="no">
+    <head>
+        <meta charset="UTF-8">
+        <title>JSON</title>
+        <style>
+            svg{
+                border: 1px solid red;
+                width: 400px;
+                height: 500px;
+            }
+        </style>
+    </head>
+    <body>
+        <p id="skrivUt"></p>
+        <canvas id="gfx" width="500" height="400"></canvas>
+
+        <script>
+    
+            var canvas = document.getElementById("gfx");
+            var ctx = canvas.getContext('2d'); 
+
+            var skrivUt = document.getElementById("skrivUt");
+
+            let sirkeldata = [];
+            let firkantdata = [];
+            async function hentSirkler(){
+                const data = await fetch("https://raw.githubusercontent.com/zelowL/navneliste/main/figurer.json");
+                const json = await data.json();
+                sirkeldata = json.sirkler;
+                firkantdata = json.firkanter;
+            }
+            
+            hentSirkler().then(sirk => {
+
+                for (var sirkel of sirkeldata){
+                    var X = sirkel.x;
+                    var Y = sirkel.y;
+                    var R = sirkel.rad; 
+                    ctx.beginPath();
+                    ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = sirkel.color;
+                    ctx.stroke();
+                }
+
+            });
+
+           
+            
+       </script>
+        
+    </body>
+</html>
